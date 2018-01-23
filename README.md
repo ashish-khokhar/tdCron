@@ -33,5 +33,5 @@ There aren't any "real" tests included with the class (so you won't find any PHP
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
