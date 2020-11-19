@@ -287,6 +287,15 @@
 
 			}
 
+			// @bug: getNextOccurence('* * * * *') == getLastOccurence('* * * * *') which should be 1 min different
+			// @fix: Applying static method for every minute expression (@reason: Applying static fix due to no time to debug)
+            if ($next) {
+                $clean_expression = self::sanitizeExpression($expression);
+                if ($clean_expression == '* * * * *' || $clean_expression == '*/1 * * * *') {
+                    $rtime[0] += 1;
+                }
+            }
+	
 			return mktime($rtime[1], $rtime[0], 0, $rtime[3], $rtime[2], $rtime[5]);
 
 		}
@@ -387,7 +396,7 @@
 			// First of all we cleanup the expression and remove all duplicate tabs/spaces/etc.
 			// For example "*              * *    * *" would be converted to "* * * * *", etc.
 
-			$expression	= preg_replace('/(\s+)/', ' ', strtolower(trim($expression)));
+			$expression	= self::sanitizeExpression($expression);
 
 			// Lets see if we've already parsed that expression
 
@@ -435,4 +444,26 @@
 
 		}
 
+		/**
+		 * sanitizeExpression() sanitizes the expression and remove all duplicate tabs/spaces/etc.
+		 * For example "*              * *    * *" would be converted to "* * * * *", etc.
+		 *
+		 * @access	public
+		 * @param	mixed		$expression
+		 * @return	mixed
+		 * @since	0.0.1	Initial Release
+		 * @author	Ashish Khokhar
+		 */
+		static public function sanitizeExpression($expression) {
+			if(is_array($expression)) {
+				$result = [];
+				foreach($expression as $e) {
+					$result[$e] = self::sanitizeExpression($e);
+				}
+	
+				return $result;
+			}
+	
+			return preg_replace('/(\s+)/', ' ', strtolower(trim($expression)));
+		}
 	}

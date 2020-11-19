@@ -46,13 +46,6 @@
 	 */
 
 	class tdCronEntry {
-
-		/**
-		 * The parsed cron-expression.
-		 * @var mixed
-		 */
-		static private $cron		= array();
-
 		/**
 		 * Ranges.
 		 * @var mixed
@@ -87,7 +80,7 @@
 		 */
 		static private $keywords	= array(IDX_MONTH	=> array('/(january|januar|jan)/i'			=> 1,
 										'/(february|februar|feb)/i'			=> 2,
-										'/(march|maerz|märz|mar|mae|mär)/i'		=> 3,
+										'/(march|maerz|mï¿½rz|mar|mae|mï¿½r)/i'		=> 3,
 										'/(april|apr)/i'				=> 4,
 										'/(may|mai)/i'					=> 5,
 										'/(june|juni|jun)/i'				=> 6,
@@ -134,6 +127,7 @@
 			// Next basic check... do we have 5 segments?
 
 			$cron	= explode(' ',$expression);
+			$dummy	= [];
 
 			if (count($cron) <> 5) {
 
@@ -285,9 +279,7 @@
 				$expanded[]	= (int)$atom;
 
 			}
-
-			$expanded2	= array_unique($expanded);
-
+			
 			return $expanded;
 
 		}
